@@ -1,0 +1,11 @@
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\bin\Debug\netcoreapp2.0\WordFinder.deps.json
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\bin\Debug\netcoreapp2.0\WordFinder.runtimeconfig.json
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\bin\Debug\netcoreapp2.0\WordFinder.runtimeconfig.dev.json
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\bin\Debug\netcoreapp2.0\WordFinder.dll
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\bin\Debug\netcoreapp2.0\WordFinder.pdb
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\obj\Debug\netcoreapp2.0\WordFinder.csprojResolveAssemblyReference.cache
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\obj\Debug\netcoreapp2.0\WordFinder.csproj.CoreCompileInputs.cache
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\obj\Debug\netcoreapp2.0\WordFinder.AssemblyInfoInputs.cache
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\obj\Debug\netcoreapp2.0\WordFinder.AssemblyInfo.cs
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\obj\Debug\netcoreapp2.0\WordFinder.dll
+C:\Users\Madhu\source\repos\WordFinder\WordFinder\obj\Debug\netcoreapp2.0\WordFinder.pdb
