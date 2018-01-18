@@ -18,13 +18,21 @@ namespace WordFinder
     {
         [XmlElement(ElementName = "if")]
         public string If { get; set; }
+
+        [XmlText]
+        public string Value { get; set; }
     }
 
     [XmlRoot(ElementName = "et")]
     public class Etymology
     {
+        [XmlText]
+        public string[] Value { get; set; }
+
         [XmlElement(ElementName = "it")]
         public List<string> It { get; set; }
+
+
     }
 
     [XmlRoot(ElementName = "dt")]
@@ -32,6 +40,9 @@ namespace WordFinder
     {
         [XmlElement(ElementName = "sx")]
         public Sx Sx { get; set; }
+
+        [XmlText]
+        public string Value { get; set; }
     }
 
     [XmlRoot(ElementName = "sx")]
@@ -51,7 +62,7 @@ namespace WordFinder
         [XmlElement(ElementName = "sn")]
         public List<string> Sn { get; set; }
         [XmlElement(ElementName = "dt")]
-        public List<Dt> Dt { get; set; }
+        public List<DefiningText> Definingtext { get; set; }
         [XmlElement(ElementName = "ssl")]
         public string Ssl { get; set; }
         [XmlElement(ElementName = "ss")]
@@ -61,6 +72,9 @@ namespace WordFinder
     [XmlRoot(ElementName = "pr")]
     public class Pronunciation
     {
+        [XmlText]
+        public string[] Value { get; set; }
+
         [XmlElement(ElementName = "it")]
         public string It { get; set; }
     }
@@ -73,7 +87,7 @@ namespace WordFinder
         [XmlElement(ElementName = "sound")]
         public Sound Sound { get; set; }
         [XmlElement(ElementName = "pr")]
-        public Pr Pr { get; set; }
+        public Pronunciation Pronunciation { get; set; }
         [XmlElement(ElementName = "fl")]
         public string Fl { get; set; }
     }
@@ -88,15 +102,15 @@ namespace WordFinder
         [XmlElement(ElementName = "sound")]
         public Sound Sound { get; set; }
         [XmlElement(ElementName = "pr")]
-        public string Pr { get; set; }
+        public Pronunciation Pronunciation { get; set; }
         [XmlElement(ElementName = "fl")]
         public string Fl { get; set; }
         [XmlElement(ElementName = "in")]
-        public List<In> In { get; set; }
+        public List<Inflection> Inflection { get; set; }
         [XmlElement(ElementName = "et")]
-        public Et Et { get; set; }
+        public Etymology Etymology { get; set; }
         [XmlElement(ElementName = "def")]
-        public Def Def { get; set; }
+        public Definition Definition { get; set; }
         [XmlElement(ElementName = "uro")]
         public List<Uro> Uro { get; set; }
         [XmlAttribute(AttributeName = "id")]
@@ -104,10 +118,10 @@ namespace WordFinder
     }
 
     [XmlRoot(ElementName = "entry_list")]
-    public class EntryList
+    public class Entries
     {
         [XmlElement(ElementName = "entry")]
-        public Entry Entry { get; set; }
+        public List<Entry> Entry { get; set; }
         [XmlAttribute(AttributeName = "version")]
         public string Version { get; set; }
     }

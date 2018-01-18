@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{87B2DA43-F5CB-490C-9365-143B6F1C4668}|Default">
+  <MonoDevelop.Ide.ItemProperties.WordFinder PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Data/Words.cs">
+    <Files>
+      <File FileName="Service/HttpClient.cs" Line="15" Column="10" />
+      <File FileName="Data/Entries.cs" Line="99" Column="39" />
+      <File FileName="Program.cs" Line="29" Column="1" />
+      <File FileName="Data/Words.cs" Line="47" Column="9" />
+      <File FileName="Writer/Html/HtmlWriter.cs" Line="11" Column="45" />
+      <File FileName="Utils/Parser.cs" Line="26" Column="1" />
+      <File FileName="Writer/IWriter.cs" Line="9" Column="61" />
+      <File FileName="Data/data.cs" Line="114" Column="31" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/mrajagopalan/Code/personal/merriam-webster-word-search/Program.cs" relfile="Program.cs" line="33" column="1" />
+      <Breakpoint file="/Users/mrajagopalan/Code/personal/merriam-webster-word-search/Program.cs" relfile="Program.cs" line="25" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

@@ -1,0 +1,6 @@
+
+*.dll
+*.pdb
+bin/Debug/*.*
+*.cache
+obj/*.*

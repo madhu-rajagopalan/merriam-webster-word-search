@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- mod'd 3.8.10 to allow for sound files -->
+<!-- NOTE that electronic dept files need sound after head
+        even if pron only after headword variant -->
+<!-- DTD generated from colleg.dtd and w4.dtd -->
+<!-- aqdate added 08.13.09 for dates in quotes- rdc -->
+<!-- for enhanced added <dxety to etys,
+    <r_link (now d_link) as roman link cross ref, 
+    and <i_link as italic link cross ref 
+    as well as <quote Examples with <qword and <aq 
+    dx_def for red - elec only - dir xref inside defs 
+    as at abstract - rdc added 9-23-09
+    as ELEMENT dx_def (#PCDATA | dxt | it)*
+    this might generate it's own parens 
+-->
+<!ELEMENT alpha (entry | comment)+>
+<!ATTLIST alpha
+    letter CDATA #REQUIRED
+    tt CDATA #IMPLIED
+>
+<!ELEMENT ahw (#PCDATA)>
+<!ELEMENT comment ANY >
+<!ELEMENT aq (#PCDATA | it | aqdate)*>
+<!ELEMENT art (artref, capt, dim)>
+<!ELEMENT artref EMPTY>
+<!ATTLIST artref
+    id CDATA #REQUIRED
+>
+<!-- <!ELEMENT bs ((sn?, svr?, sin?, sp*, set*, slb?, ssl?)*, dt*, (sd, ssl?, dt+)?)+>
+-->
+<!ELEMENT ca (#PCDATA | cat | pr | pr_alt | pr_ipa | pr_wod | sound)*>
+<!ELEMENT capt (#PCDATA | it | inf | sup | sc)*>
+<!ELEMENT cat (#PCDATA | inf | sup)*>
+<!ELEMENT cl (#PCDATA)>
+<!ELEMENT ct (#PCDATA | ctn)*>
+<!ELEMENT ctn (#PCDATA)>
+<!ELEMENT cx (cl, ct+)+>
+<!ELEMENT date (#PCDATA)>
+<!ELEMENT aqdate (#PCDATA)>
+<!-- <!ELEMENT def (vt?, date?, sl*, (sense, sn?, svr?, sin?, (sp, sp_alt?, sp_ipa?, sp_wod?, sound?)?, set*, slb?, ssl?)*, (dt+, (sd, sin?, (sp, sp_alt?, sp_ipa?, sp_wod?, sound?)?, slb*, ssl*, dt+))+, ss?, us?)+> -->
+<!ELEMENT def (vt?, date?, sl*, sense, ss?, us?)+ >
+    <!-- sense made mandatory in def 092710 - rdc -->
+
+    <!-- sense revised to make dt optional because of {bs} - 092810 - rdc -->
+    <!-- sense revised to make move sin after sp - 092810 - rdc -->
+    <!-- sense revised to make move svr after sp - 092810 - rdc -->
+<!ELEMENT sense (sn?, (sp, sp_alt?, sp_ipa?, sp_wod?, sound?)?, svr?, sin*, slb*, set?, ssl*, dt*, (sd, sin?, (sp, sp_alt?, sp_ipa?, sp_wod?, sound?)?, slb*, ssl*, dt+)?) >
+<!ATTLIST sense
+    snumb CDATA #IMPLIED
+>
+
+<!ELEMENT dim (#PCDATA)>
+<!ELEMENT dro (drp, (pr, pr_alt?, pr_ipa?, pr_wod?, sound?)?, vr?, et*, def)>
+<!ELEMENT drp (#PCDATA)>
+<!-- dt modified to add lx element - rdc -->
+<!ELEMENT dt (#PCDATA | it | dx | sx | ca | vi | inf | un | sc | sup | math | d_link | i_link | dx_def)*>
+<!ATTLIST dt
+    mode CDATA #IMPLIED
+>
+<!ELEMENT dx_def (#PCDATA | dxt | it)* >
+    <!-- this might generate it's own parens -->
+<!ELEMENT dx_ety (#PCDATA | dxt | it)*>
+<!ELEMENT dx (#PCDATA | dxt | it)*>
+<!ELEMENT dxn (#PCDATA)>
+<!ELEMENT dxt (#PCDATA | dxn | inf)*>
+
+<!-- entry modified to add qt at the end - rdc -->
+<!-- entry modified to add sl after et - 092810 - rdc -->
+
+<!ELEMENT entry (((subj?, art?, formula?, table?), hw, (pr?, pr_alt?, pr_ipa?, pr_wod?, sound?)*, (ahw, (pr, pr_alt?, pr_ipa?, pr_wod?, sound?)?)*, vr?), (fl?, in*, lb*, ((cx, (ss | us)*) | et)*, sl*), (dx | def)*, (list? | (uro*, dro*, ((pl, pt, sa?)|(note)|quote+)*)))>
+<!ATTLIST entry
+    id CDATA #REQUIRED
+    printing CDATA #IMPLIED
+    rating CDATA #IMPLIED
+>
+<!ATTLIST table
+    id CDATA #REQUIRED
+>
+<!-- et modified to add dxety and i_link elements - rdc -->
+<!ELEMENT et (#PCDATA | it | ma | inf | sup | sc | dx_ety | i_link)*>
+<!ATTLIST et
+    mode CDATA #IMPLIED
+>
+
+<!ELEMENT fl (#PCDATA)>
+<!ELEMENT formula (dim)>
+<!ATTLIST formula
+    id CDATA #REQUIRED
+>
+<!-- r_link (now d_link) and i_link elements with attributes added for enhanced hrefs - rdc -->
+<!ELEMENT d_link (#PCDATA | sup | inf)*>
+<!ATTLIST d_link
+    ref CDATA #REQUIRED
+>
+<!ELEMENT i_link (#PCDATA | sup | inf)*>
+<!ATTLIST i_link
+    ref CDATA #REQUIRED
+>
+<!ELEMENT table (dim)>
+
+<!ELEMENT hw (#PCDATA | inf | sup | it)*>
+<!ELEMENT if (#PCDATA | inf | sup)*>
+<!ELEMENT il (#PCDATA)>
+<!ELEMENT in (il?, if, (pr, pr_alt?, pr_ipa?, pr_wod?, sound?)?)+>
+<!ELEMENT inf (#PCDATA | it | rom)*>
+<!ELEMENT it (#PCDATA | sup | inf)*>
+<!-- <bi> is bold italic inside the <qt> examples - rdc -->
+<!-- <!ELEMENT bi (#PCDATA | sup | inf)*> -->
+<!ELEMENT qword (#PCDATA | sup | inf)*>
+<!ELEMENT item (#PCDATA)>
+<!ELEMENT lb (#PCDATA)>
+<!ELEMENT list (item+)>
+<!ELEMENT ma (#PCDATA)>
+<!ELEMENT math EMPTY>
+<!ELEMENT pl (#PCDATA)>
+<!ELEMENT note (#PCDATA)>
+<!ELEMENT rom (#PCDATA)>
+<!ELEMENT pr (#PCDATA | it | sc | sup)*>
+<!ATTLIST pr
+    mode CDATA #IMPLIED
+>
+<!ELEMENT pr_alt (#PCDATA | it)*>
+<!ELEMENT pr_ipa (#PCDATA | it)*>
+<!ELEMENT pr_wod (#PCDATA | it)*>
+<!ELEMENT pt (#PCDATA | sc | vi | it)*>
+<!ELEMENT sa (#PCDATA)>
+<!ELEMENT sc (#PCDATA)>
+<!ELEMENT sd (#PCDATA)>
+<!ELEMENT set (#PCDATA | it | ma | sc)*>
+<!ELEMENT sin (il?, if?, (pr, pr_alt?, pr_ipa?, pr_wod?, sound?)?, spl?)+>
+<!ELEMENT sl (#PCDATA)>
+<!ELEMENT slb (#PCDATA)>
+<!ELEMENT sn (#PCDATA | snp)*>
+<!ELEMENT snp (#PCDATA)>
+<!-- new sound file -->
+<!-- stat is 1 if recorded, then wave file name, and ref is c if from collegiate -->
+<!ELEMENT sound EMPTY >
+<!ATTLIST sound
+    stat CDATA #IMPLIED
+    wav CDATA #IMPLIED
+    ref CDATA #IMPLIED
+ >
+<!ELEMENT sp (#PCDATA | sc | it)*>
+<!ATTLIST sp
+    mode CDATA #IMPLIED
+>
+<!ELEMENT sp_alt (#PCDATA | it)*>
+<!ELEMENT sp_ipa (#PCDATA | it)*>
+<!ELEMENT sp_wod (#PCDATA | it)*>
+<!ELEMENT spl (#PCDATA)>
+<!ELEMENT ss (#PCDATA)>
+<!ELEMENT ssl (#PCDATA)>
+<!ELEMENT subj (#PCDATA)>
+<!ELEMENT sup (#PCDATA | it | rom)*>
+<!ELEMENT svr (vl | va | pr | pr_alt | pr_ipa | pr_wod | sound | vpl?)+>
+<!ELEMENT sx (#PCDATA | sxn | inf)*>
+<!ELEMENT sxn (#PCDATA | it)*>
+<!ELEMENT un (#PCDATA | vi | it | sc)*>
+<!ELEMENT ure (#PCDATA)>
+<!ELEMENT uro (ure, (pr, pr_alt?, pr_ipa?, pr_wod?, sound?)?, vr?, fl?, lb?, sl?)>
+<!ELEMENT us (#PCDATA)>
+<!ELEMENT va (#PCDATA | inf | it | sup)*>
+<!-- qt is quote in examples - no angle brackets and can contain <bi> as well as <aq> - rdc -->
+<!ELEMENT quote (#PCDATA | it | aq | inf | sup | sc | qword)*>
+<!ELEMENT vi (#PCDATA | it | aq | inf | sup | sc)*>
+<!ELEMENT vl (#PCDATA)>
+<!ELEMENT vpl (#PCDATA)>
+<!ELEMENT vr (vl, va, (pr, pr_alt?, pr_ipa?, pr_wod?, sound?)*)+>
+<!ELEMENT vt (#PCDATA)>
+

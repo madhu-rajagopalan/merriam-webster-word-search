@@ -5,4 +5,12 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Utils\" />
+    <Folder Include="Service\" />
+    <Folder Include="Data\" />
+    <Folder Include="Input\" />
+    <Folder Include="Writer\" />
+    <Folder Include="Writer\Html\" />
+  </ItemGroup>
 </Project>

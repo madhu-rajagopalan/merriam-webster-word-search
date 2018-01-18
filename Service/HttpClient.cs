@@ -8,12 +8,15 @@ namespace WordFinder
 {
     public class HttpClient
     {
-        public string GetWord()
+        string apiKey = "08b06987-1ad8-473e-a766-ba4cf8968b62";
+        string baseUrl = @"https://www.dictionaryapi.com/api/v1/references/collegiate/xml/{0}?key={1}";
+
+        public string GetWordResponse(string word)
         {
             string html = string.Empty;
-            string url = @"https://www.dictionaryapi.com/api/v1/references/collegiate/xml/chastisement?key=08b06987-1ad8-473e-a766-ba4cf8968b62";
+            string absUrl = string.Format(baseUrl, word, apiKey);
 
-            System.Net.HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            System.Net.HttpWebRequest request = (HttpWebRequest)WebRequest.Create(absUrl);
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
