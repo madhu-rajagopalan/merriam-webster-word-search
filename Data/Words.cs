@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Web;
 using WordFinder.Writer;
 
 namespace WordFinder
@@ -13,6 +14,7 @@ namespace WordFinder
         private static string ETYMOLOGY = "Etymology";
         //private static string POS = "POS";
         private static string PRONUNCIATION = "Pronunciation";
+        private static string SPACE = " ";
 
         private List<Entry> listOfWords = new List<Entry>();
 
@@ -37,23 +39,74 @@ namespace WordFinder
 
         private string AddWordToOutput(Entry entry)
         {
-            Dictionary<string, string> wordInfo = new Dictionary<string, string>();
-            wordInfo.TryAdd(WORD, entry.Id);
-            //wordInfo.TryAdd(PRONUNCIATION, entry.Pronunciation); //write one for now
-            wordInfo.TryAdd(DEFINITION, entry.Definition.Ss);//write one definition for now
-            wordInfo.TryAdd(ETYMOLOGY, entry.Etymology.It[0].ToString());//write one for now
+            Dictionary<string, string[]> wordInfo = new Dictionary<string, string[]>();
+            wordInfo.TryAdd(WORD, new string[] { entry.Id });
+            if (entry.Pronunciation != null)
+            {
+                wordInfo.TryAdd(PRONUNCIATION, entry.Pronunciation.Value);
+            }
+            else
+            {
+                wordInfo.Add(PRONUNCIATION, new string[] { SPACE });
+            }
+
+            if (entry.Definition != null)
+            {
+                wordInfo.TryAdd(DEFINITION, ConvertDefinitionsToStrings(entry.Definition.Definingtext));
+            }
+            else
+            {
+                wordInfo.Add(DEFINITION, new string[] { SPACE });
+            }
+
+            if (entry.Etymology != null)
+            {
+                wordInfo.TryAdd(ETYMOLOGY, entry.Etymology.Value);
+            }
+            else
+            {
+                wordInfo.Add(ETYMOLOGY, new string[] { SPACE });
+            }
             return wordWriter.WriteWord(wordInfo);
         }
 
         public string Write()
         {
+            wordWriter.SetHeader(new string[] { WORD, PRONUNCIATION, DEFINITION, ETYMOLOGY });
+
             string wrapper = wordWriter.WriteTemaplte();
+
             foreach (Entry word in listOfWords)
             {
                 lines.Append(AddWordToOutput(word));
             }
 
-            return string.Format(wrapper,lines.ToString());
+            string output = string.Format(wrapper, lines.ToString());
+
+            using (System.IO.StreamWriter file =
+                   new System.IO.StreamWriter(@"/Users/mrajagopalan/Downloads/outputfile.html"))
+            {
+                file.WriteLine(output);
+
+            }
+
+            return output;
+        }
+
+       
+
+        public string[] ConvertDefinitionsToStrings(List<DefiningText> values)
+        {
+            List<string> stringValues = new List<string>();
+
+            if (values != null)
+            {
+                foreach (DefiningText val in values)
+                {
+                    stringValues.Add(val.Value);
+                }
+            }
+            return stringValues.ToArray();
         }
     }
 }

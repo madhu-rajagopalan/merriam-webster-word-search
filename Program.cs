@@ -17,18 +17,38 @@ namespace WordFinder
 
         static void Main(string[] args)
         {
+            //each word is separated by a new line
+            //string inputFilePath = args[0];
+
+            string inputFilePath = "/Users/mrajagopalan/Downloads/inputfile.txt";
+
             client = new HttpClient();
             IWriter writer = new HtmlWriter();
             Words list = new Words(writer);
 
-            List<Entry> result = GetWord("potato");
-            if(result != null)
-            {
-                list.AddWords(result);
-            }
-            Console.Write(list.Write());
+            // Read each line of the file into a string array. Each element
+            // of the array is one line of the file.
+            string[] lines = System.IO.File.ReadAllLines(inputFilePath);
+            List<Entry> result;
 
-            //Console.Write(HtmlWriterUtil.WriteHtmlTemplate());
+            foreach (string line in lines)
+            {
+                try
+                {
+                    
+                    result = GetWord(line.Trim());
+                    if (result != null)
+                    {
+                        list.AddWords(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+
+            Console.Write(list.Write());
 
             Console.Read();
         }
