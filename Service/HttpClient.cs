@@ -8,9 +8,23 @@ namespace WordFinder
 {
     public class HttpClient
     {
-        string apiKey = "08b06987-1ad8-473e-a766-ba4cf8968b62";
         string baseUrl = @"https://www.dictionaryapi.com/api/v1/references/collegiate/xml/{0}?key={1}";
+        string apiKey;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:WordFinder.HttpClient"/> class.
+        /// </summary>
+        /// <param name="key">Key.</param>
+        public HttpClient(string key)
+        {
+            apiKey = key;
+        }
+
+        /// <summary>
+        /// Gets the word response.
+        /// </summary>
+        /// <returns>The word response.</returns>
+        /// <param name="word">Word.</param>
         public string GetWordResponse(string word)
         {
             string html = string.Empty;

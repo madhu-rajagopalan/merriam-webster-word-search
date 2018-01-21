@@ -3,6 +3,7 @@
 *.suo
 *.user
 *.sln.docstates
+api-key
 
 # Build results
 [Dd]ebug/
@@ -206,3 +207,4 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+api-key

@@ -22,7 +22,9 @@ namespace WordFinder
 
             string inputFilePath = "/Users/mrajagopalan/Downloads/inputfile.txt";
 
-            client = new HttpClient();
+            string apiKey = GetApiKey();
+
+            client = new HttpClient(apiKey);
             IWriter writer = new HtmlWriter();
             Words list = new Words(writer);
 
@@ -35,11 +37,10 @@ namespace WordFinder
             {
                 try
                 {
-                    
                     result = GetWord(line.Trim());
                     if (result != null)
                     {
-                        list.AddWords(result);
+                        list.AddWords(line, result);
                     }
                 }
                 catch (Exception ex)
@@ -51,6 +52,28 @@ namespace WordFinder
             Console.Write(list.Write());
 
             Console.Read();
+        }
+
+        private static string GetApiKey()
+        {
+            string apikeypath = Path.Combine(Directory.GetCurrentDirectory(), "api-key");
+            string key="";
+
+            try
+            {
+                string[] lines = File.ReadAllLines(apikeypath);
+                if(lines.Length > 0)
+                {
+                    return lines[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return key;
+
         }
 
         static List<Entry> GetWord(string word)

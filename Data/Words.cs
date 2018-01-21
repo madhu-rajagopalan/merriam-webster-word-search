@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using WordFinder.Writer;
 
@@ -16,6 +17,8 @@ namespace WordFinder
         private static string PRONUNCIATION = "Pronunciation";
         private static string SPACE = " ";
 
+        private static string RegexToRemove = @"\[[0-9*]\]";
+
         private List<Entry> listOfWords = new List<Entry>();
 
 
@@ -28,9 +31,19 @@ namespace WordFinder
             listOfWords.Add(word);
         }
 
-        public void AddWords(List<Entry> words)
+        public void AddWords(string id, List<Entry> words)
         {
-            listOfWords.AddRange(words);
+            if (words != null)
+            {
+                foreach(Entry word in words)
+                {
+                    string distinctWord = Regex.Replace(word.Id, RegexToRemove, "");
+                    if(id == distinctWord)
+                    {
+                        listOfWords.Add(word);
+                    }
+                }
+            }
         }
 
         public Words() : this(null)

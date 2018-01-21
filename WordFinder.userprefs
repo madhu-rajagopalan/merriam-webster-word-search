@@ -1,16 +1,17 @@
 ﻿<Properties StartupConfiguration="{87B2DA43-F5CB-490C-9365-143B6F1C4668}|Default">
   <MonoDevelop.Ide.ItemProperties.WordFinder PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="merriam-webster-word-search Status">
+  <MonoDevelop.Ide.Workbench ActiveDocument=".gitignore">
     <Files>
-      <File FileName="Service/HttpClient.cs" Line="15" Column="10" />
+      <File FileName="Service/HttpClient.cs" Line="10" Column="6" />
       <File FileName="Data/Entries.cs" Line="58" Column="41" />
-      <File FileName="Program.cs" Line="51" Column="41" />
-      <File FileName="Data/Words.cs" Line="76" Column="13" />
+      <File FileName="Program.cs" Line="38" Column="18" />
+      <File FileName="Data/Words.cs" Line="19" Column="61" />
       <File FileName="Writer/Html/HtmlWriter.cs" Line="117" Column="54" />
       <File FileName="Utils/Parser.cs" Line="26" Column="1" />
       <File FileName="Writer/IWriter.cs" Line="14" Column="1" />
       <File FileName="Data/data.cs" Line="114" Column="31" />
-      <File FileName="merriam-webster-word-search Status" />
+      <File FileName="api-key" Line="2" Column="1" />
+      <File FileName=".gitignore" Line="6" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
