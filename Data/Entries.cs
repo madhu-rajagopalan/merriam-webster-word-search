@@ -38,11 +38,12 @@ namespace WordFinder
     [XmlRoot(ElementName = "dt")]
     public class DefiningText
     {
+        [XmlText]
+        public string[] Value { get; set; }
+
         [XmlElement(ElementName = "sx")]
         public Sx Sx { get; set; }
 
-        [XmlText]
-        public string Value { get; set; }
     }
 
     [XmlRoot(ElementName = "sx")]
@@ -59,8 +60,8 @@ namespace WordFinder
         public string Vt { get; set; }
         [XmlElement(ElementName = "date")]
         public string Date { get; set; }
-        [XmlElement(ElementName = "sn")]
-        public List<string> Sn { get; set; }
+        //[XmlElement(ElementName = "sn")]
+        //public List<string> Sn { get; set; }
         [XmlElement(ElementName = "dt")]
         public List<DefiningText> Definingtext { get; set; }
         [XmlElement(ElementName = "ssl")]
@@ -95,6 +96,7 @@ namespace WordFinder
     [XmlRoot(ElementName = "entry")]
     public class Entry
     {
+        public int SerialNumber { get; set; }
         [XmlElement(ElementName = "ew")]
         public string Ew { get; set; }
         [XmlElement(ElementName = "hw")]

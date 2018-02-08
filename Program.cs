@@ -33,6 +33,8 @@ namespace WordFinder
             string[] lines = System.IO.File.ReadAllLines(inputFilePath);
             List<Entry> result;
 
+            int serial = 1;
+
             foreach (string line in lines)
             {
                 try
@@ -40,16 +42,21 @@ namespace WordFinder
                     result = GetWord(line.Trim());
                     if (result != null)
                     {
-                        list.AddWords(line, result);
+                        list.AddWords(serial, line, result);
+                        serial++;
+
                     }
+
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(string.Format("Did not get word details for: {0}", line ));
                     Console.WriteLine(ex.Message);
                 }
+
             }
 
-            Console.Write(list.Write());
+            list.Write();
 
             Console.Read();
         }
@@ -69,7 +76,7 @@ namespace WordFinder
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
             }
 
             return key;
@@ -87,12 +94,18 @@ namespace WordFinder
 
             foreach(XElement element in items)
             {
-                Console.Write(element.ToString());
+                try
+                {
+                    string xml = element.ToString();
+                    XmlSerializer ser = new XmlSerializer(typeof(Entry));
+                    Entry entry = xml.ParseXML<Entry>();
 
-                XmlSerializer ser = new XmlSerializer(typeof(Entry));
-                Entry entry = element.ToString().ParseXML<Entry>();
-
-                words.Add(entry);
+                    words.Add(entry);
+                }
+                catch(Exception ex){
+                    Console.WriteLine("Failed to parse word result");
+                    Console.WriteLine(ex.Message);
+                }
 
             }
 

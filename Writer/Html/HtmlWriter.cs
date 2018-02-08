@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using WordFinder.Writer;
@@ -17,6 +18,9 @@ namespace WordFinder.Utils
         internal string styleUrl = "https://unpkg.com/purecss@1.0.0/build/pure-min.css";
         internal string styleUrlIntegrity = "sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w";
         internal string styleUrlCrossorigin = "anonymous";
+        private static string RegexToRemove = @"\[[0-9*]\]";
+        internal string fontAwesomeLink = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
 
         private XElement tableHead = new XElement("thead");
 
@@ -46,7 +50,10 @@ namespace WordFinder.Utils
                                      new XAttribute("rel","stylesheet"), 
                                      new XAttribute("href", styleUrl), 
                                      new XAttribute("integrity", styleUrlIntegrity),
-                                     new XAttribute("crossorigin", styleUrlCrossorigin))),
+                                     new XAttribute("crossorigin", styleUrlCrossorigin)),
+                                     new XElement("link",
+                                     new XAttribute("rel", "stylesheet"),
+                                     new XAttribute("href", fontAwesomeLink))),
                             new XElement("body",
                                  new XElement("div", 
                                               new XElement("table", new XAttribute("class", "pure-table pure-table-bordered"),tableHead, "{0}"))
@@ -69,8 +76,23 @@ namespace WordFinder.Utils
             {
                 string[] content = entry.Value;
 
-                XElement cell = new XElement("td", Normalize(content));
-                row.Add(cell);
+                if (entry.Key == "Link" && entry.Value[0].Trim() != string.Empty)
+                {
+                    string rawlink = entry.Value[0];
+                    string distinctWordLink = Regex.Replace(rawlink, RegexToRemove, "");
+                                               
+                    XElement link = new XElement("a", new XAttribute("class", "fa fa-external-link"),
+                                                 new XAttribute("style","text-decoration:none;"),
+                                                 new XAttribute("target", "_blank"),
+                                                 new XAttribute("href",distinctWordLink));
+                    XElement cell = new XElement("td",link);
+                    row.Add(cell);
+                }
+                else
+                {
+                    XElement cell = new XElement("td", Normalize(content));
+                    row.Add(cell);
+                }
             }
             return row.ToString();
         }
