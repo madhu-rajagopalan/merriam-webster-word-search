@@ -58,6 +58,7 @@ namespace WordFinder
 
             list.Write();
 
+            Console.WriteLine("done.");
             Console.Read();
         }
 

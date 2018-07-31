@@ -37,9 +37,26 @@ namespace WordFinder
 
         public void AddWords(int serialNumber, string id, List<Entry> words)
         {
+            Console.Write(".");
+
             bool alreadyAddedSerailNumber = false;
+            bool wordAdded = false;
             if (words != null)
             {
+                if(words.Count == 0)
+                {
+                    Entry entry = new Entry()
+                    {
+                        SerialNumber = serialNumber,
+                        Id = id
+
+                    };  
+
+                    listOfWords.Add(entry);
+                    wordAdded = true;
+                    return;
+                }
+
                 foreach(Entry word in words)
                 {
                     if (!alreadyAddedSerailNumber)
@@ -54,7 +71,21 @@ namespace WordFinder
                     if(id == distinctWord)
                     {
                         listOfWords.Add(word);
+                        wordAdded = true;
                     }
+                }
+
+                if(words.Count > 0 && !wordAdded)
+                {
+                    Entry entry = new Entry()
+                    {
+                        SerialNumber = serialNumber,
+                        Id = id
+
+                    };
+
+                    listOfWords.Add(entry);
+                    wordAdded = true;
                 }
             }
         }
@@ -152,7 +183,8 @@ namespace WordFinder
             {
                 foreach (DefiningText val in values)
                 {
-                    stringValues.Add(string.Join("", val.Value));
+                    if(val.Value != null)
+                        stringValues.Add(string.Join("", val.Value));
                 }
             }
             return stringValues.ToArray();

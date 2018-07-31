@@ -40,7 +40,7 @@ namespace WordFinder
                 html = reader.ReadToEnd();
             }
 
-            Console.WriteLine(html);
+            //Console.WriteLine(html);
             return html;
         }
     }
