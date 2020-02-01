@@ -20,7 +20,7 @@ namespace WordFinder
             //each word is separated by a new line
             //string inputFilePath = args[0];
 
-            string inputFilePath = "/Users/mrajagopalan/Downloads/inputfile.txt";
+            string inputFilePath = "/Users/madhurajagopalan/Downloads/inputfile.txt";
 
             string apiKey = GetApiKey();
 
@@ -77,7 +77,7 @@ namespace WordFinder
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
             }
 
             return key;

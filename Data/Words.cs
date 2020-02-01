@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Newtonsoft.Json;
+using WordFinder.Data;
 using WordFinder.Writer;
 
 namespace WordFinder
@@ -96,6 +99,7 @@ namespace WordFinder
 
         private string AddWordToOutput(Entry entry)
         {
+
             Dictionary<string, string[]> wordInfo = new Dictionary<string, string[]>();
 
             if (entry.SerialNumber > 0)
@@ -110,44 +114,140 @@ namespace WordFinder
             }
 
             wordInfo.TryAdd(WORD, new string[] { entry.Id });
+           
 
-            if (entry.Pronunciation != null)
+            if (!IsNullWord(entry))
             {
-                wordInfo.TryAdd(PRONUNCIATION, entry.Pronunciation.Value);
+
+                if (entry.Pronunciation != null)
+                {
+                    wordInfo.TryAdd(PRONUNCIATION, entry.Pronunciation.Value);
+                }
+                else
+                {
+                    wordInfo.Add(PRONUNCIATION, new string[] { SPACE });
+                }
+
+                //part of speech
+                if (entry.Fl != null)
+                {
+                    wordInfo.TryAdd(POS, new string[] { entry.Fl });
+                }
+                else
+                {
+                    wordInfo.Add(POS, new string[] { SPACE });
+                }
+
+                if (entry.Definition != null)
+                {
+                    wordInfo.TryAdd(DEFINITION, ConvertDefinitionsToStrings(entry.Definition.Definingtext));
+                }
+                else
+                {
+                    wordInfo.Add(DEFINITION, new string[] { SPACE });
+                }
+
+                if (entry.Etymology != null)
+                {
+                    //wordInfo.TryAdd(ETYMOLOGY, entry.Etymology.Value);
+                    IEnumerable<string> val = Interleave(entry.Etymology.Value, entry.Etymology.It);
+                    string[] s = val.Select(p => p).ToArray();
+                    wordInfo.TryAdd(ETYMOLOGY, s);
+                }
+                else
+                {
+                    wordInfo.Add(ETYMOLOGY, new string[] { SPACE });
+                }
             }
+            //MW cannot find the word, call google API
+            //this not how I want to fallback to google API, this is a hack and a terrible way...
+            //I don't have time to rewrite my base classes to fit both models..
             else
             {
-                wordInfo.Add(PRONUNCIATION, new string[] { SPACE });
+                Console.Write("*");
+
+                List<GoogleWord> backupIfMWFailed = GetGoogleWord(entry.Id);
+
+                if (backupIfMWFailed != null)
+                {
+
+                    try
+                    {
+                        if (backupIfMWFailed.Count<GoogleWord>() > 0)
+                        {
+                            if (backupIfMWFailed[0].phonetic.Count > 0)
+                            {
+                                wordInfo.TryAdd(PRONUNCIATION, backupIfMWFailed[0].phonetic.ToArray());
+                            }
+                            else
+                            {
+                                wordInfo.Add(PRONUNCIATION, new string[] { SPACE });
+                            }
+
+                            //part of speech
+                            if (entry.Fl != null)
+                            {
+                                wordInfo.TryAdd(POS, new string[] { entry.Fl });
+                            }
+                            else
+                            {
+                                wordInfo.Add(POS, new string[] { SPACE });
+                            }
+
+                            if (backupIfMWFailed[0].meaning != null)
+                            {
+                                wordInfo.TryAdd(DEFINITION, ConvertMeaningToStrings(backupIfMWFailed[0]));
+                            }
+                            else
+                            {
+                                wordInfo.Add(DEFINITION, new string[] { SPACE });
+                            }
+
+                            if (backupIfMWFailed[0].origin != null)
+                            {
+
+                                wordInfo.TryAdd(ETYMOLOGY, new string[] { backupIfMWFailed[0].origin });
+                            }
+                            else
+                            {
+                                wordInfo.Add(ETYMOLOGY, new string[] { SPACE });
+                            }
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("failed to get word from google");
+                    }
+                }
+                else //even google backup failed
+                {
+                    //write empty values
+                    wordInfo.Add(PRONUNCIATION, new string[] { SPACE });
+                    wordInfo.Add(POS, new string[] { SPACE });
+                    wordInfo.Add(DEFINITION, new string[] { SPACE });
+                    wordInfo.Add(ETYMOLOGY, new string[] { SPACE });
+                }
             }
 
-            //part of speech
-            if (entry.Fl != null)
-            {
-                wordInfo.TryAdd(POS, new string[] { entry.Fl });
-            }
-            else
-            {
-                wordInfo.Add(POS, new string[] { SPACE });
-            }
-
-            if (entry.Definition != null)
-            {
-                wordInfo.TryAdd(DEFINITION, ConvertDefinitionsToStrings(entry.Definition.Definingtext));
-            }
-            else
-            {
-                wordInfo.Add(DEFINITION, new string[] { SPACE });
-            }
-
-            if (entry.Etymology != null)
-            {
-                wordInfo.TryAdd(ETYMOLOGY, entry.Etymology.Value);
-            }
-            else
-            {
-                wordInfo.Add(ETYMOLOGY, new string[] { SPACE });
-            }
             return wordWriter.WriteWord(wordInfo);
+        }
+
+        public List<GoogleWord> GetGoogleWord(string word)
+        {
+            HttpClient client = new HttpClient(string.Empty); //key not needed for google API
+            try
+            {
+                string json = client.GetGoogleWord(word);
+                json = json.Replace("\n", string.Empty);
+                List<GoogleWord> googleWord = JsonConvert.DeserializeObject<List<GoogleWord>>(json);
+                return googleWord;
+
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public string Write()
@@ -164,7 +264,7 @@ namespace WordFinder
             string output = string.Format(wrapper, lines.ToString());
 
             using (System.IO.StreamWriter file =
-                   new System.IO.StreamWriter(@"/Users/mrajagopalan/Downloads/outputfile.html"))
+                   new System.IO.StreamWriter(@"/Users/madhurajagopalan/Downloads/outputfile.html"))
             {
                 file.WriteLine(output);
 
@@ -188,6 +288,76 @@ namespace WordFinder
                 }
             }
             return stringValues.ToArray();
+        }
+
+        public string[] ConvertMeaningToStrings(GoogleWord word)
+        {
+            List<string> stringValues = new List<string>();
+
+
+            if(word.meaning.adjective != null && word.meaning.adjective.Count >0)
+            {
+                foreach (Adjective val in word.meaning.adjective)
+                {
+                    if (val.definition != null)
+                        stringValues.Add(string.Join("Adjective: ", val.definition));
+                }
+            }
+
+            if (word.meaning.noun != null && word.meaning.noun.Count() >0)
+            {
+                foreach (Noun val in word.meaning.noun)
+                {
+                    if (val.definition != null)
+                        stringValues.Add(string.Join("Noun: ", val.definition));
+                }
+
+            }
+
+            if (word.meaning.verb != null && word.meaning.verb.Count > 0)
+            {
+                foreach (Verb val in word.meaning.verb)
+                {
+                    if (val.definition != null)
+                        stringValues.Add(string.Join("Verb: ", val.definition));
+                }
+
+            }
+
+            return stringValues.ToArray();
+        }
+
+        public IEnumerable<string> Interleave(string[] first, List<String> second)
+        {
+            if (first != null && second != null)
+            {
+                List<string> list1 = new List<string>(first);
+
+                var enumerator1 = list1.GetEnumerator();
+                var enumerator2 = second.GetEnumerator();
+
+                bool firstHasMore;
+                bool secondHasMore;
+
+                while ((firstHasMore = enumerator1.MoveNext())
+                     | (secondHasMore = enumerator2.MoveNext()))
+                {
+                    if (firstHasMore)
+                        yield return enumerator1.Current;
+
+                    if (secondHasMore)
+                        yield return enumerator2.Current;
+                }
+            }
+            
+        }
+
+        public bool IsNullWord(Entry entry)
+        {
+            if (entry.Definition == null)
+                return true;
+            else
+                return false;
         }
     }
 }

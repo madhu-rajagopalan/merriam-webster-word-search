@@ -43,5 +43,18 @@ namespace WordFinder
             //Console.WriteLine(html);
             return html;
         }
+
+        public string GetGoogleWord(string word)
+        {
+            string json = string.Empty;
+            string url = string.Format("https://googledictionaryapi.eu-gb.mybluemix.net/?define={0}&lang=en", word);
+
+            using (var webClient = new System.Net.WebClient())
+            {
+                json = webClient.DownloadString(url);
+                // Now parse with JSON.Net
+            }
+            return json;
+        }
     }
 }
